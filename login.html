@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+  </head>
+  <body>
+    <form>
+      <h1>회원가입</h1>
+      <div>email : <input type="email" id="signUpEmail" /></div>
+      <div>password : <input type="password" id="signUpPassword" /></div>
+      <button type="submit" id="signUpButton">회원가입 하기</button>
+      <button>로그인 하러 가기</button>
+    </form>
+
+    <form>
+      <h1>로그인</h1>
+      <div>email : <input type="email" id="signInEmail" /></div>
+      <div>password : <input type="password" id="signInPassword" /></div>
+      <button type="submit" id="signInButton">로그인 하기</button>
+      <button>회원가입 하러 가기</button>
+    </form>
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyCjYCkcxoAN66tQWQwVPxy7CY_FYGJagQ0",
+        authDomain: "fir-7f525.firebaseapp.com",
+        projectId: "fir-7f525",
+        storageBucket: "fir-7f525.appspot.com",
+        messagingSenderId: "385517239198",
+        appId: "1:385517239198:web:03dbf9b4f7d2e8207fb48f",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+        signInWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+
+      const auth = getAuth();
+
+      document
+        .getElementById("signUpButton")
+        .addEventListener("click", (event) => {
+          event.preventDefault();
+
+          const signUpemail = document.getElementById("signUpEmail").value;
+          const signUpPassword =
+            document.getElementById("signUpPassword").value;
+          console.log(signUpemail, signUpPassword);
+
+          createUserWithEmailAndPassword(auth, signUpemail, signUpPassword)
+            .then((userCredential) => {
+              console.log("회원가입 성공! >", userCredential);
+              // Signed in
+              const user = userCredential.user;
+              // ...
+            })
+            .catch((error) => {
+              console.log("error >", error);
+              const errorCode = error.code;
+              const errorMessage = error.message;
+            });
+        });
+
+      document
+        .getElementById("signInButton")
+        .addEventListener("click", (event) => {
+          event.preventDefault();
+
+          const signInEmail = document.getElementById("signInEmail").value;
+          const signInPassword =
+            document.getElementById("signInPassword").value;
+          console.log(signInEmail, signInPassword);
+
+          signInWithEmailAndPassword(auth, signInEmail, signInPassword)
+            .then((userCredential) => {
+              console.log("로그인 성공! >", userCredential);
+
+              // Signed in
+              const user = userCredential.user;
+              // ...
+            })
+            .catch((error) => {
+              const errorCode = error.code;
+              const errorMessage = error.message;
+            });
+        });
+    </script>
+  </body>
+</html>
